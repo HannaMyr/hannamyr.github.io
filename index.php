@@ -15,7 +15,7 @@
 <header>
 <div id="logo">
 <a href="https://itproger.com/" title="Na glavnyu">
-<img src="img/logo.png" title="ItProger.com" alt="itProger.com">
+<img src="img/19.png" title="ItProger.com" alt="itProger.com">
 <span>Progboz pogod</span>
 </a>
 </div>
