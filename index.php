@@ -7,7 +7,7 @@
 <meta name="decription" content="Prognoz pogod,prognoz,pogod">
 <meta name="keywords" content="Prognoz pogod,prognoz,pogod">
 <meta name="viewport" content="Prognoz pogod,prognoz,pogod">
-<link href="img/.ico" rel="shortcut icon" type="image/x-icon">
+<link href="img/1.ico" rel="shortcut icon" type="image/x-icon">
 </head>
 <body>
 <div id="wrapper">
