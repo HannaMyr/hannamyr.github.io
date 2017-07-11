@@ -72,6 +72,202 @@ Registraca
 
   </nav>
 </div>
+  <? PHP
+/ **
+ * OpenWeatherMap-PHP-API - php api для анализа данных о погоде с http://www.OpenWeatherMap.org.
+ *
+* @license MIT
+ *
+ * См. Файл LICENSE, распространяемый с помощью этого исходного кода, для дальнейшего
+ * Информация об авторском праве и лицензировании.
+ *
+ * Пожалуйста, посетите следующие ссылки, чтобы ознакомиться с правилами использования и лицензией
+ * OpenWeatherMap перед использованием этого класса:
+ *
+* @see http://www.OpenWeatherMap.org
+* @see http://www.OpenWeatherMap.org/terms
+* @see http://openweathermap.org/appid
+ * /
+Используйте  Cmfcmf \ OpenWeatherMap ;
+Используйте  Cmfcmf \ OpenWeatherMap \ Exception  как  OWMException ;
+Require_once  __DIR__  .  ' /bootstrap.php ' ;
+$ Cli  =  false ;
+$ Lf  =  ' <br> ' ;
+If ( php_sapi_name () ===  ' cli ' ) {
+    $ Lf  =  " \ n " ;
+    $ Cli  =  true ;
+}
+// Язык данных (попробуйте свой язык здесь!):
+$ Lang  =  ' de ' ;
+// Единицы (могут быть «метрическими» или «имперскими» [по умолчанию]):
+$ Units  =  ' metric ' ;
+// Получить объект OpenWeatherMap. Не используйте кеширование (посмотрите на пример_Cache.php, чтобы узнать, как он работает).
+$ Owm  =  new  OpenWeatherMap ();
+$ Owm -> setApiKey ( $ myApiKey );
+// Пример 1: Получить текущую температуру в Берлине.
+$ Weather  =  $ owm -> getWeather ( ' Berlin ' , $ units , $ lang );
+Echo  " ПРИМЕР 1 $ lf " ;
+// $ weather содержит всю доступную информацию о погоде для Берлина.
+// Давайте получим температуру:
+// Возвращает его как форматированную строку (используя __toString ()):
+Echo  $ weather -> температура ;
+Echo  $ lf ;
+// Возвращает его как форматированную строку (используя метод):
+Echo  $ weather -> температура -> getFormatted ();
+Echo  $ lf ;
+// Возвращает только значение:
+Echo  $ weather -> температура -> getValue ();
+Echo  $ lf ;
+// Возвращает только объект:
+Echo  $ weather -> температура -> getUnit ();
+Echo  $ lf ;
+/ *
+* В приведенном выше примере мы используем «ярлык». OpenWeatherMap возвращает минимальную температуру в день,
+* Максимальная температура и температура прямо сейчас. Если вы не укажете, какую температуру вы хотите, по умолчанию
+* До текущей температуры. См. Ниже, как получить доступ к другим значениям. Обратите внимание, что каждый из них реализовал методы
+ * "GetFormatted ()", "getValue ()", "getUnit ()".
+ * /
+// Возвращает текущую температуру:
+Echo  ' Current: ' . $ Weather -> температура -> сейчас ;
+Echo  $ lf ;
+// Возвращает минимальную температуру:
+Echo  ' Minimum: ' . $ Weather -> температура -> мин ;
+Echo  $ lf ;
+// Возвращает максимальную температуру:
+Echo  ' Maximum: ' . $ Weather -> температура -> max ;
+Echo  $ lf ;
+/ *
+* Говоря о «текущем» и «сейчас», это означает, что когда данные о погоде были в последний раз обновлены. Вы можете получить это
+ * Через объект DateTime:
+ * /
+Echo  ' Последнее обновление: ' . $ Weather -> lastUpdate -> format ( ' r ' );
+Echo  $ lf ;
+// Пример 2: Получите текущее давление и влажность в Гонконге.
+$ Weather  =  $ owm -> getWeather ( « Гонконг » , $ ед. , $ Lang );
+Echo  " $ lf $ lf ПРИМЕР 2 $ lf " ;
+/ *
+ * Вы можете использовать приведенные выше методы только для получения значения или единицы измерения.
+ * /
+Эхо  « Давление: » . $ Weather -> давление ;
+Echo  $ lf ;
+Echo  ' Влажность: ' . $ Weather -> влажность ;
+Echo  $ lf ;
+// Пример 3: Получите сегодняшнее время восхода и захода солнца.
+Echo  " $ lf $ lf ПРИМЕР 3 $ lf " ;
+/ *
+ * Эти функции возвращают объект DateTime.
+ * /
+Эхо  « Восход солнца » . $ Weather -> sun -> height -> format ( ' r ' );
+Echo  $ lf ;
+Echo  « Закат: » . $ Weather -> sun -> set -> format ( ' r ' );
+Echo  $ lf ;
+// Пример 4: Получить текущую температуру из координат (Гренландия :blush:).
+$ Weather  =  $ owm -> getWeather ( массив ( ' lat '  =>  77.73038 , ' lon '  =>  41.89604 ), $ units , $ lang );
+Echo  " $ lf $ lf ПРИМЕР 4 $ lf " ;
+Echo  ' Температура: ' . $ Weather -> температура ;
+Echo  $ lf ;
+// Пример 5: Получить текущую температуру из идентификатора города. Город является внутренним идентификатором, используемым OpenWeatherMap. См. Также пример 6.
+$ Weather  =  $ owm -> getWeather ( 2172797 , $ units , $ lang );
+echo  " $ lf $ lf ПРИМЕР 5 $ lf " ;
+Echo  ' Город: ' . $ Weather -> city -> name ;
+Echo  $ lf ;
+Echo  ' Температура: ' . $ Weather -> температура ;
+Echo  $ lf ;
+// Пример 6: Получить информацию о городе.
+$ Weather  =  $ owm -> getWeather ( ' Paris ' , $ units , $ lang );
+Echo  " $ lf $ lf ПРИМЕР 6 $ lf " ;
+Echo  ' Id: ' . $ Weather -> city -> id ;
+Echo  $ lf ;
+Echo  ' Name: ' . $ Weather -> city -> name ;
+Echo  $ lf ;
+Echo  ' Lon: ' . $ Weather -> city -> lon ;
+Echo  $ lf ;
+Echo  ' Lat: ' . $ Weather -> city -> lat ;
+Echo  $ lf ;
+Echo  ' Страна: ' . $ Погода -> город -> страна ;
+Echo  $ lf ;
+// Пример 7: Получить информацию о ветре.
+Echo  " $ lf $ lf ПРИМЕР 7 $ lf " ;
+Echo  ' Speed: ' . $ Weather -> ветер -> скорость ;
+Echo  $ lf ;
+Echo  ' Direction: ' . $ Weather -> ветер -> направление ;
+Echo  $ lf ;
+/ *
+ * Для скорости и направления есть описание, которое не всегда переводится.
+ * /
+Echo  ' Speed: ' . $ Weather -> wind -> speed -> getDescription ();
+Echo  $ lf ;
+Echo  ' Direction: ' . $ Weather -> ветер -> направление -> getDescription ();
+Echo  $ lf ;
+// Пример 8: Получить информацию о облаках.
+Echo  " $ lf $ lf Пример 8 $ lf " ;
+// Число в фигурных скобках, по-видимому, является показателем того, насколько облачно небо.
+Echo  ' Clouds: ' . $ Weather -> clouds -> getDescription () . ' ( ' . $ Weather -> clouds . ' ) ' ;
+Echo  $ lf ;
+// Пример 9: Получить информацию о осадках.
+Echo  " $ lf $ lf Пример 9 $ lf " ;
+Echo  ' Осаждение: ' . $ Weather -> осадки -> getDescription () . ' ( ' . $ Weather -> осадки . ' ) ' ;
+Echo  $ lf ;
+// Пример 10: Показать уведомление об авторских правах. ПРЕДУПРЕЖДЕНИЕ: Это не официальный текст. Этот намек был создан, просмотрев http: //www.http: //openweathermap.org/copyright.
+Echo  " $ lf $ lf Пример 10 $ lf " ;
+Echo  $ owm :: COPYRIGHT ;
+Echo  $ lf ;
+// Пример 11: Извлечение значков погоды.
+Echo  " $ lf $ lf Пример 11 $ lf " ;
+$ Weather  =  $ owm -> getWeather ( ' Berlin ' );
+Echo  $ weather -> weather -> icon ;
+Echo  $ lf ;
+Echo  $ weather -> weather -> getIconUrl ();
+// Пример 12: Получить необработанные XML-данные.
+Echo  " $ lf $ lf Пример 12 $ lf " ;
+$  Xml =  $ owm -> getRawWeatherData ( ' Berlin ' , $ units , $ lang , null , ' xml ' );
+If ( $ cli ) {
+    Echo  $ xml ;
+} Else {
+    Echo  ' <pre> <code> ' . Htmlspecialchars ( $ xml ) . ' </ Code> </ pre> ' ;
+}
+Echo  $ lf ;
+// Пример 13: Получить сырые данные json.
+Echo  " $ lf $ lf Пример 13 $ lf " ;
+$  Json =  $ owm -> getRawWeatherData ( ' Berlin ' , $ units , $ lang , null , ' json ' );
+If ( $ cli ) {
+    Echo  $ json ;
+} Else {
+    Echo  ' <pre> <code> ' . Htmlspecialchars ( $ json ) . ' </ Code> </ pre> ' ;
+}
+Echo  $ lf ;
+// Пример 14: Получить сырые данные html.
+Echo  " $ lf $ lf Пример 14 $ lf " ;
+Echo  $ owm -> getRawWeatherData ( ' Berlin ' , $ units , $ lang , null , ' html ' );
+Echo  $ lf ;
+// Пример 15: Обработка ошибок.
+Echo  " $ lf $ lf Пример 15 $ lf " ;
+// Попробуйте ошибочное название города.
+Попробуйте {
+    $ Weather  =  $ owm -> getWeather ( ' ThisCityNameIsNotValidAndDoesNotExist ' , $ units , $ lang );
+} Поймать ( OWMException  $ е ) {
+    Echo  $ e -> getMessage () . ' (Код ' . $ E -> getCode () . ' ). ' ;
+    Echo  $ lf ;
+}
+// Попробуйте недействительный $ query.
+Попробуйте {
+    $ Weather  =  $ owm -> getWeather ( новый  \ DateTime ( ' now ' ), $ units , $ lang );
+} Catch ( \ Exception  $ e ) {
+    Echo  $ e -> getMessage () . ' (Код ' . $ E -> getCode () . ' ). ' ;
+    Echo  $ lf ;
+}
+// Полная обработка ошибок будет выглядеть так:
+Попробуйте {
+    $ Weather  =  $ owm -> getWeather ( - 1 , $ units , $ lang );
+} Поймать ( OWMException  $ е ) {
+    Echo  ' Исключение OpenWeatherMap: ' . $ E -> getMessage () . ' (Код ' . $ E -> getCode () . ' ). ' ;
+    Echo  $ lf ;
+} Catch ( \ Exception  $ e ) {
+    Echo  ' Общее исключение: ' . $ E -> getMessage () . ' (Код ' . $ E -> getCode () . ' ). ' ;
+    Echo  $ lf ;
+}
+ 
+?>
 <footer>
 <div id="site_name">
 <span>Prognoz</span> - pogoda dly tebya
