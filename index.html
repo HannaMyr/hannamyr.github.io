@@ -11,6 +11,37 @@
   <link rel="stylesheet" href="css/font-awesome.min.css">
 </head>
 <body>
+  <h1>Your weather today</h1>
+  City:<input type="text" name="sity"/><br/>
+  Country:<input type="text" name="country"/><br/>
+  <input type="submit" name="submit" value="submit"/><br/>
+  <?php
+if (isset($_GET)){
+$user_city = $_GET['city'];
+$user_country = $_GET['country'];
+
+$api_url = "api.openweathermap.org/data/2.5/weather?q=" . $user_city . "," . $user_country;
+$weather_data =file_get_contents($api_url);
+$json = json_decode($weather_data, TRUE);
+
+$user_temp = $json['main']['temp'];
+$user_humidity = $json['main']['humidity'];
+
+echo "<strong> City: </strong>" . $user_city . "<br/>";
+echo "<strong> Country: </strong>" . $user_country . "<br/>";
+echo "<strong> Hmidity: </strong>" . $user_humidity . "<br/>";
+echo "<strong> Temperatura: </strong>" . $user_temp . "<br/>";
+  };
+?>
+  
+  <?php
+if(isset($_GET['submit'])) {
+$data = "data.json";
+$json_string = json_encode($GET, JSON_PRETTY_PRINT);
+file_put_contents($data, $json_string, FILE_APPEND);
+};
+?>
+
 <div id="wrapper">
 <div id="content">
 <header>
@@ -32,6 +63,14 @@ Registraca
 </a>
 </div>
 </header>
+  <nav>
+    <a href=""></a>
+    <a href=""></a>
+    <a href=""></a>
+    <a href=""></a>
+    <a href=""></a>
+
+  </nav>
 </div>
 <footer>
 <div id="site_name">
