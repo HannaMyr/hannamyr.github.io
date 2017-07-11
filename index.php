@@ -14,8 +14,8 @@
 <div id="content">
 <header>
 <div id="logo">
-<a href="https://itproger.com/" title="Na glavnyu">
-<img src="img/19.png" title="ItProger.com" alt="itProger.com">
+<a href="https://hannamyr.github.io/" title="Na glavnyu">
+<img src="img/19.png" title="hannamyr.github.io" alt="hannamyr.github.io">
 <span>Progboz pogod</span>
 </a>
 </div>
